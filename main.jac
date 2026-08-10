@@ -15,7 +15,8 @@ import from services.projects {
     cut_checkpoint, discover, landing_stats
 }
 import from services.cycles {
-    cycle_status, get_cycle, list_cycles, score_entry, set_challenge, standings
+    cycle_status, get_cycle, list_cycles, score_entry, set_challenge, standings,
+    admin_rewind
 }
 import from services.popups {
     apply_popup, list_popups, get_popup, review_popup, complete_popup

@@ -162,6 +162,35 @@ walker score_entry {
     }
 }
 
+"""Core-team ops: shift the platform clock backwards to simulate cycle
+progression — pilots and staging need to rehearse a rollover without
+waiting two weeks. Shifts the epoch and every materialized cycle
+together so numbering stays consistent."""
+walker admin_rewind {
+    has days: int = 0,
+        reports: list[dict] = [];
+
+    can run with Root entry {
+        me = my_builder();
+        if not (me and me.is_core) or self.days <= 0 {
+            report {"ok": False};
+            disengage;
+        }
+        hub = ensure_platform();
+        shift = datetime.timedelta(days=self.days);
+        hub.epoch_iso = (parse_iso(hub.epoch_iso) - shift).isoformat() + "Z";
+        for c in [hub->:RunsCycle:->[?:Cycle]] {
+            c.opens_at = (parse_iso(c.opens_at) - shift).isoformat() + "Z";
+            c.submissions_close_at = (
+                parse_iso(c.submissions_close_at) - shift
+            ).isoformat() + "Z";
+            c.ends_at = (parse_iso(c.ends_at) - shift).isoformat() + "Z";
+        }
+        current = ensure_current_cycle(hub);
+        report {"ok": True, "current_cycle": current.number, "phase": current.phase()};
+    }
+}
+
 walker set_challenge {
     has number: int = 0,
         challenge: str = "",

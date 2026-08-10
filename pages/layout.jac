@@ -25,8 +25,9 @@ def:pub layout -> JsxLayout {
             <Navbar
                 {dark}
                 onToggleTheme={lambda {
-                    dark = not dark;
-                    localStorage.setItem("jb_theme", "dark" if dark else "light");
+                    flipped = not dark;
+                    dark = flipped;
+                    localStorage.setItem("jb_theme", "dark" if flipped else "light");
                 }}
             />
             <main className="flex-1">

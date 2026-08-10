@@ -29,10 +29,17 @@ def:pub page -> JsxPage {
     can with entry {
         loggedIn = jacIsLoggedIn();
         checking = False;
-        if loggedIn {
-            _ = loadFeed();
-        } else {
-            _ = loadLanding();
+    }
+
+    # Branch in a dependency effect, not the mount effect: a `has` state
+    # assignment is not readable in the same tick it was written.
+    can with [loggedIn, checking] entry {
+        if not checking {
+            if loggedIn {
+                _ = loadFeed();
+            } else {
+                _ = loadLanding();
+            }
         }
     }
 
