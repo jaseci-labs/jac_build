@@ -1,20 +1,29 @@
-import from ".components.ui.button" { Button }
-import from ".components.ui.card" {
-    Card, CardHeader, CardTitle, CardDescription, CardContent
-}
-import ".styles.global.css";
+"""jac.build — the home for the Jac builders community.
 
-def:pub app() -> JsxElement {
-    return <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-6">
-        <Card className="w-full max-w-md">
-            <CardHeader>
-                <CardTitle>Welcome to jac_build</CardTitle>
-                <CardDescription>A themed jac-shadcn starter.</CardDescription>
-            </CardHeader>
-            <CardContent className="flex gap-2">
-                <Button>Get started</Button>
-                <Button variant="outline">Docs</Button>
-            </CardContent>
-        </Card>
-    </div>;
+Entry point: registers every server walker (the imports below are what
+put them on the API) and hands the client router to the page tree in
+pages/. The whole platform — frontend, backend, and the graph between —
+is one Jac program.
+"""
+
+import from services.social {
+    setup_builder, get_me, get_builder, list_builders, toggle_follow,
+    create_post, load_feed
+}
+import from services.projects {
+    create_project, get_project, update_project, add_member, my_projects,
+    cut_checkpoint, discover, landing_stats
+}
+import from services.cycles {
+    cycle_status, get_cycle, list_cycles, score_entry, set_challenge, standings
+}
+import from services.popups {
+    apply_popup, list_popups, get_popup, review_popup, complete_popup
+}
+
+import ".styles.global.css";
+import ".styles.site.css";
+
+def:pub app(children: any) -> JsxElement {
+    return <>{children}</>;
 }

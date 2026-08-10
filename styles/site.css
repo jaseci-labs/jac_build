@@ -1,0 +1,48 @@
+/* jac.build custom layer — safe from `jac retheme` (which only rewrites
+   global.css). Brand accents, track chips, timeline rails. */
+
+:root {
+  --brand: #ff6b35;
+}
+
+.font-mono-brand {
+  font-family: "Geist Mono Variable", ui-monospace, monospace;
+}
+
+/* Track chips */
+.chip-fresh {
+  background: color-mix(in oklab, #22c55e 18%, transparent);
+  color: #16a34a;
+  border: 1px solid color-mix(in oklab, #22c55e 35%, transparent);
+}
+.dark .chip-fresh {
+  color: #4ade80;
+}
+.chip-glowup {
+  background: color-mix(in oklab, var(--brand) 16%, transparent);
+  color: #c2410c;
+  border: 1px solid color-mix(in oklab, var(--brand) 40%, transparent);
+}
+.dark .chip-glowup {
+  color: #fb923c;
+}
+
+/* Timeline rail on project pages */
+.timeline-rail {
+  position: relative;
+}
+.timeline-rail::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--border);
+}
+
+/* Award badges */
+.award-chip {
+  background: color-mix(in oklab, gold 14%, transparent);
+  border: 1px solid color-mix(in oklab, gold 45%, transparent);
+}
