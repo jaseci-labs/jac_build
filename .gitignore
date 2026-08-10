@@ -1,0 +1,4 @@
+.jac/
+node_modules/
+dogfood.md
+server.log
