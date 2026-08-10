@@ -58,14 +58,15 @@ walker:pub get_cycle {
 
     can run with Root entry {
         hub = ensure_platform();
-        cycle = (
+        maybe = (
             ensure_current_cycle(hub)
             if self.number <= 0
             else cycle_by_number(hub, self.number)
         );
-        if not cycle {
+        if not maybe {
             disengage;
         }
+        cycle = maybe as Cycle;
         me = my_builder();
         mine = me.handle if me else "";
         entries = [bundle_entry(e, mine) for e in cycle_entries(cycle)];
@@ -114,16 +115,18 @@ walker score_entry {
         reports: list[dict] = [];
 
     can run with Root entry {
-        me = my_builder();
-        if not me {
+        maybe_me = my_builder();
+        if not maybe_me {
             report {"ok": False, "error": "Log in to judge."};
             disengage;
         }
-        target = jobj(self.entry_id);
-        if not isinstance(target, Entry) {
+        found = jobj(self.entry_id);
+        if not isinstance(found, Entry) {
             report {"ok": False, "error": "No such entry."};
             disengage;
         }
+        me = maybe_me as Builder;
+        target = found as Entry;
         hub = ensure_platform();
         cycle = cycle_by_number(hub, target.cycle_number);
         if not cycle or cycle.phase() == "building" {

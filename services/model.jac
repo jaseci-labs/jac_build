@@ -143,11 +143,11 @@ node Project {
         return AccessLevel.CONNECT;
     }
 
-    def members -> list {
+    def members -> list[Builder] {
         return [self<-:MemberOf:<-[?:Builder]];
     }
 
-    def checkpoints_sorted -> list {
+    def checkpoints_sorted -> list[Checkpoint] {
         points = [self->:HasCheckpoint:->[?:Checkpoint]];
         points.sort(key=lambda (c: Checkpoint) { c.number; });
         return points;
